@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="vi"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Đăng ký giao ước thi đua 2026–2027</title>
+<style>
+:root{--bg:#f4f6fb;--c:#fff;--tx:#1b2330;--mu:#5d6778;--ac:#1d4ed8;--ac2:#e6eeff;--bd:#d6ddea;--ok:#15803d;--er:#b91c1c;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1420;--c:#182030;--tx:#e8ecf4;--mu:#9aa6ba;--ac:#7aa2ff;--ac2:#22305a;--bd:#2c3850;--ok:#4ade80;--er:#f87171}}
+:root[data-theme="dark"]{--bg:#0f1420;--c:#182030;--tx:#e8ecf4;--mu:#9aa6ba;--ac:#7aa2ff;--ac2:#22305a;--bd:#2c3850;--ok:#4ade80;--er:#f87171}
+html{scroll-padding-top:calc(70px + env(safe-area-inset-top,0px))}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif}
+.w{max-width:760px;margin:auto;padding:12px}
+h1{font-size:1.3rem;margin:.4rem 0}h2{font-size:1rem;margin:1.2rem 0 .4rem;color:var(--ac)}
+.sub{color:var(--mu);font-size:.9rem;margin:0 0 .6rem}
+.card{background:var(--c);border:1px solid var(--bd);border-radius:12px;padding:12px;margin:8px 0}
+.card.ok{border-color:var(--ok)}.card.miss{border-color:var(--er);box-shadow:0 0 0 2px var(--er)}
+.t{font-weight:600}.t b{color:var(--ac);margin-right:6px}.s{color:var(--mu);font-size:.88rem}
+.os{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.o{flex:1 1 auto}.o input{position:absolute;opacity:0}
+.o span{display:block;padding:10px 14px;border:1.5px solid var(--bd);border-radius:10px;cursor:pointer;min-height:24px}
+.o input:checked+span{background:var(--ac2);border-color:var(--ac);font-weight:600}
+.o input:focus-visible+span{outline:2px solid var(--ac)}
+label.fl{display:block;font-size:.88rem;color:var(--mu);margin-top:8px}
+input[type=text],input[type=number],textarea{width:100%;box-sizing:border-box;font:inherit;padding:9px 10px;margin-top:3px;border:1.5px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx)}
+details{margin-top:8px;font-size:.85rem;color:var(--mu)}summary{cursor:pointer}
+.bar{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:8px 0}
+.pb{height:8px;background:var(--bd);border-radius:5px;overflow:hidden}.pb i{display:block;height:100%;width:0;background:var(--ok);transition:width .2s}
+.tabs{display:flex;gap:8px;margin:8px 0}.tabs button{flex:1}
+button{font:inherit;padding:11px 14px;border-radius:10px;border:1.5px solid var(--ac);background:var(--c);color:var(--ac);cursor:pointer;font-weight:600}
+button.p{background:var(--ac);color:#fff}button.on{background:var(--ac2)}
+.msg{color:var(--er);font-weight:600;margin:8px 0}
+textarea{min-height:200px;font-size:.85rem}
+table{border-collapse:collapse;width:100%;font-size:.88rem}td,th{border:1px solid var(--bd);padding:5px 7px;text-align:left;vertical-align:top}
+.sc{overflow-x:auto}
+</style></head><body><div class="w">
+<h1>📝 Bản giao ước thi đua năm học 2026 – 2027</h1>
+<p class="sub">Hội nghị viên chức, người lao động. Bấm chọn nội dung đăng ký, không cần đăng nhập, dùng được trên mọi thiết bị.</p>
+<div class="tabs"><button id="t1" class="on">Đăng ký cá nhân</button><button id="t2">Tổng hợp (tổ trưởng)</button></div>
+
+<div id="v1">
+<div class="card"><label class="fl" style="margin:0">Họ và tên *<input type="text" data-k="n" autocomplete="name"></label>
+<label class="fl">Tổ / bộ môn *<input type="text" data-k="t"></label>
+<label class="fl">Chức vụ<input type="text" data-k="c"></label></div>
+<div class="bar"><div class="s" id="pt"></div><div class="pb"><i id="pg"></i></div></div>
+<div id="f"></div>
+<div class="msg" id="msg"></div>
+<button class="p" id="go" style="width:100%">Hoàn tất đăng ký</button>
+<p class="sub">Bản đang nhập tự lưu trên máy, đóng trang mở lại vẫn còn.</p>
+</div>
+
+<div id="rs" hidden>
+<h2 id="rh"></h2>
+<textarea id="rt" readonly></textarea>
+<div class="os"><button class="o p" id="sh">Chia sẻ</button><button class="o" id="cp">Sao chép</button><button class="o" id="bk">Sửa lại</button></div>
+<div class="s" id="cm"></div>
+</div>
+
+<div id="v2" hidden>
+<h2>Tổng hợp các bản đăng ký</h2>
+<p class="sub">Dán toàn bộ tin nhắn mà giáo viên gửi (có dòng “Mã gửi: GU1:…”) vào ô dưới, nhiều bản cùng lúc cũng được.</p>
+<textarea id="in" placeholder="Dán các bản đăng ký vào đây…"></textarea>
+<label class="fl">Tổng số viên chức, người lao động của đơn vị<input type="number" id="tot" value="53"></label>
+<button class="p" id="ag" style="margin-top:8px">Tổng hợp</button>
+<div id="ar"></div>
+</div>
+</div>
+<script>
+// DÁN LINK ỨNG DỤNG WEB (kết thúc bằng /exec) VÀO GIỮA HAI DẤU NGOẶC KÉP:
+const URL_GUI="https://script.google.com/macros/s/AKfycbyZor1kUZrWbJcPJnUTXxP5OZEZuCJeas5vbfOEgNtmSY0ZS9dgx3ZwEQUrF5ieA_DWpg/exec";
+const LT="Chỉ đề nghị khi đủ tiêu chuẩn và có thành tích được cấp có thẩm quyền ghi nhận.",DK=["Đăng ký","Không đăng ký"],CT=["Có thành tích đề nghị","Không"],TG=["Đăng ký tham gia","Không"];
+const hs=(id,t,tm,n)=>({id,t,o:TG,b:"Thời gian dự kiến tổ chức thi cấp tỉnh: "+tm,n});
+const G=[{h:"I. DANH HIỆU THI ĐUA CÁ NHÂN",i:[
+{id:"1",t:"Danh hiệu “Lao động tiên tiến/Chiến sĩ tiên tiến” (xét hằng năm khi kết thúc năm học)",o:DK,b:"Luật Thi đua, khen thưởng; NĐ 368/2026/NĐ-CP; TT 67/2026/TT-BGDĐT (Điều 6). MC: kết quả đánh giá, xếp loại viên chức."},
+{id:"2",t:"Danh hiệu “Chiến sĩ thi đua cơ sở”",s:"Điều kiện: HTXSNV hoặc đạt tiêu chuẩn LĐTT/CSTT và có sáng kiến được cơ sở công nhận.",o:DK,b:"NĐ 368/2026/NĐ-CP (Điều 5): tỷ lệ không quá 10% tổng số cá nhân đạt tiêu chuẩn LĐTT. MC: sáng kiến, quyết định công nhận.",n:"Số lượng có hạn, xét theo bình xét của Hội đồng."},
+{id:"3",t:"Chiến sĩ thi đua cấp Tỉnh",o:DK},
+{id:"4",t:"Xếp loại chất lượng viên chức năm học",o:["Hoàn thành xuất sắc (từ 90 điểm)","Hoàn thành tốt (70 – dưới 90 điểm)","Hoàn thành (50 – dưới 70 điểm)"],b:"NĐ 233/2026/NĐ-CP. Hoàn thành xuất sắc: không quá 20% số người xếp loại Hoàn thành tốt (tối đa 25% nếu đơn vị có thành tích nổi trội).",n:"Là cơ sở xét thi đua, khen thưởng."},
+{id:"5",t:"Tự theo dõi, tự chấm điểm kết quả công tác theo tháng/quý và nộp đúng hạn",c:"Cam kết thực hiện",b:"NĐ 233/2026/NĐ-CP. MC: phiếu theo dõi, đánh giá."}]},
+{h:"II. KHEN THƯỞNG",i:[
+{id:"6",t:"Bằng khen của Thủ tướng Chính phủ",o:CT,b:"Luật Thi đua, khen thưởng; NĐ 368/2026/NĐ-CP ngày 25/9/2026; TT 25/2026/TT-BNV ngày 01/10/2026. MC: quyết định ghi nhận thành tích, hồ sơ đề nghị khen thưởng.",n:LT},
+{id:"7",t:"Bằng khen UBND Tỉnh",o:CT,b:"TT 67/2026/TT-BGDĐT (Điều 12). MC: quyết định ghi nhận thành tích.",n:LT},
+{id:"8",t:"Bằng khen Bộ Giáo dục và Đào tạo",o:CT,n:LT}]},
+{h:"III. NHIỆM VỤ CHUYÊN MÔN",i:[
+{id:"9",t:"Chất lượng giáo dục lớp / môn phụ trách",f:[["Lớp/môn phụ trách","t"],["Tỷ lệ học sinh hoàn thành tốt trở lên (%)","n"],["Tỷ lệ học sinh chưa đạt yêu cầu, tối đa (%)","n"]],b:"Kế hoạch giáo dục của trường; sổ theo dõi, kết quả đánh giá học sinh."},
+{id:"10",t:"Dự giờ, thao giảng, chuyên đề sinh hoạt chuyên môn theo tổ/nhóm",f:[["Dự giờ (tiết/năm)","n"],["Thao giảng (tiết/năm)","n"],["Chuyên đề","t"]],b:"Kế hoạch chuyên môn của trường, tổ."},
+{id:"11",t:"Hoàn thành chương trình bồi dưỡng thường xuyên và tập huấn theo kế hoạch",c:"Cam kết hoàn thành đủ",b:"Kế hoạch bồi dưỡng; MC: chứng nhận, báo cáo."},
+{id:"12",t:"Hồ sơ chuyên môn (giáo án và hồ sơ khác theo quy định hiện hành), nộp đúng hạn",c:"Cam kết thực hiện đầy đủ",b:"Quy định hiện hành của Bộ GDĐT; hướng dẫn của Sở/trường."},
+{id:"13",t:"Sáng kiến, giải pháp nâng cao chất lượng (phải có hiệu quả thực tế, được áp dụng)",o:["01 sáng kiến cấp cơ sở","Không đăng ký"],f:[["Tên đề tài (nếu có)","t"]],b:"Điều kiện xét CSTĐ cơ sở. MC: bản mô tả, biên bản đánh giá của Hội đồng sáng kiến."},
+{id:"14",t:"Ứng dụng công nghệ thông tin, chuyển đổi số trong dạy học và quản lý lớp",f:[["Nội dung đăng ký","t"]],b:"Kế hoạch chuyển đổi số của trường."},
+{id:"15",t:"Tham gia hội thi, cuộc thi, phong trào chuyên môn do cấp có thẩm quyền tổ chức (nếu có)",s:"Chọn từng cuộc thi bên dưới. Chỉ đăng ký các hội thi có trong kế hoạch được duyệt.",p:1,b:"Phụ lục kèm Công văn số …/CV-PVHXH ngày 22/9/2026 của Phòng Văn hóa – Xã hội xã Vĩnh Gia."},
+hs("15.1","Hội thi hùng biện tiếng Anh cấp tỉnh năm 2026-2027","Tháng 03/2027","Nộp hồ sơ cuối tháng 01/2027."),
+hs("15.2","Cuộc thi Nghiên cứu khoa học, kỹ thuật dành cho học sinh Trung học cơ sở","Tháng 01/2027","Nộp hồ sơ dự thi tháng 12/2026."),
+hs("15.3","Cuộc thi thiết kế sản phẩm STEM/STEAM dành cho học sinh tiểu học","Tháng 01/2027","Nộp hồ sơ dự thi tháng 12/2026."),
+hs("15.4","Cuộc thi tìm hiểu pháp luật về phòng, chống ma túy cho học sinh các cơ sở giáo dục phổ thông và Hội thi chuyên môn, nghiệp vụ giáo dục phòng, chống ma túy cho cán bộ quản lý, giáo viên phổ thông","01/10/2026 nhận sản phẩm thi cấp tỉnh","Thực hiện CTMTQG phòng chống ma túy (Tiểu Dự án 3); nếu kinh phí không được phân bổ kịp, Sở không chấm chọn, trao giải mà chỉ xem xét giới thiệu sản phẩm tiêu biểu gửi BGDĐT."),
+hs("15.5","Hội thi Giáo viên chủ nhiệm giỏi cấp Tiểu học năm học 2026-2027","Tháng 03/2027","Nộp hồ sơ dự thi tháng 12/2026."),
+hs("15.6","Kỳ thi chọn học sinh giỏi cấp tỉnh trung học cơ sở và Giải toán trên máy tính cầm tay năm học 2026-2027","Tháng 03/2027 (dự kiến tuần đầu tiên)","Nộp hồ sơ dự thi dự kiến 20/01/2027.")]},
+{h:"IV. KỶ CƯƠNG, ĐẠO ĐỨC NHÀ GIÁO",i:[
+{id:"16",t:"Chấp hành chủ trương của Đảng, chính sách, pháp luật của Nhà nước, nội quy, quy chế của trường; giữ gìn đoàn kết nội bộ",c:"Cam kết thực hiện",b:"Quy chế làm việc của trường."},
+{id:"17",t:"Không vi phạm đạo đức nhà giáo; không dạy thêm, thu tiền sai quy định",c:"Cam kết thực hiện",b:"Quy định về đạo đức nhà giáo; quy định về dạy thêm, học thêm; các khoản thu theo quy định."},
+{id:"18",t:"Thực hiện đầy đủ ngày, giờ công; số buổi nghỉ không phép",f:[["Cam kết nghỉ không phép tối đa (buổi)","n"]],b:"Bảng chấm công."}]},
+{h:"V. PHONG TRÀO THI ĐUA – HOẠT ĐỘNG TẬP THỂ",i:[
+{id:"19",t:"Tham gia phong trào thi đua theo chủ đề năm học của ngành và của trường",f:[["Nội dung đăng ký","t"]],b:"Kế hoạch phát động thi đua của trường."},
+{id:"20",t:"Tham gia hoạt động Công đoàn, Đoàn thể, công tác xã hội, từ thiện",c:"Cam kết tham gia",b:"Kế hoạch hoạt động Công đoàn, Đoàn thể."}]}];
+const ALL=G.flatMap(g=>g.i),REQ=ALL.filter(x=>x.o||x.c),$=s=>document.querySelector(s),card=id=>document.getElementById("c"+id);
+const esc=s=>String(s==null?"":s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const sh=s=>s.length>70?s.slice(0,67)+"…":s;
+let A={};try{A=JSON.parse(localStorage.getItem("gu26")||"{}")}catch(e){}
+const save=()=>{try{localStorage.setItem("gu26",JSON.stringify(A))}catch(e){}};
+$("#f").innerHTML=G.map(g=>"<h2>"+g.h+"</h2>"+g.i.map(x=>{
+ const o=(x.o||[]).map(v=>`<label class="o"><input type="radio" name="r${x.id}" data-k="${x.id}" value="${esc(v)}"${A[x.id]===v?" checked":""}><span>${esc(v)}</span></label>`).join("");
+ const c=x.c?`<div class="os"><label class="o"><input type="checkbox" data-k="${x.id}" data-c="${esc(x.c)}"${A[x.id]?" checked":""}><span>☑ ${esc(x.c)}</span></label></div>`:"";
+ const f=(x.f||[]).map((q,j)=>`<label class="fl">${q[0]}<input type="${q[1]=="n"?"number":"text"}" inputmode="${q[1]=="n"?"decimal":"text"}" data-k="${x.id}_${j}" value="${esc(A[x.id+"_"+j])}"></label>`).join("");
+ return `<div class="card" id="c${x.id}"><div class="t"><b>${x.id}.</b>${esc(x.t)}</div>${x.s?`<div class="s">${esc(x.s)}</div>`:""}${o?`<div class="os">${o}</div>`:""}${c}${f}${x.b?`<details><summary>Căn cứ – minh chứng</summary>${esc(x.b)}</details>`:""}${x.n?`<div class="s" style="margin-top:6px">${esc(x.n)}</div>`:""}</div>`}).join("")).join("");
+document.querySelectorAll("[data-k]").forEach(e=>{if(["n","t","c"].includes(e.dataset.k))e.value=A[e.dataset.k]||""});
+function upd(){let d=0;REQ.forEach(x=>{const k=!!A[x.id];if(k)d++;const e=card(x.id);e.classList.toggle("ok",k);if(k)e.classList.remove("miss")});
+ $("#pt").textContent="Đã chọn "+d+"/"+REQ.length+" mục";$("#pg").style.width=(100*d/REQ.length)+"%"}
+document.addEventListener("input",e=>{const t=e.target,k=t.dataset&&t.dataset.k;if(!k)return;
+ A[k]=t.type=="checkbox"?(t.checked?t.dataset.c:""):t.value;save();upd()});
+upd();
+const val=(a,x)=>[a[x.id]].concat((x.f||[]).map((q,j)=>a[x.id+"_"+j]?q[0]+": "+a[x.id+"_"+j]:"")).filter(Boolean).join("; ")||"—";
+const enc=o=>btoa(unescape(encodeURIComponent(JSON.stringify(o)))),dec=s=>JSON.parse(decodeURIComponent(escape(atob(s))));
+$("#go").onclick=()=>{
+ const miss=REQ.filter(x=>!A[x.id]);let m="";
+ if(!(A.n||"").trim()||!(A.t||"").trim())m="Vui lòng nhập họ tên và tổ/bộ môn. ";
+ if(miss.length){m+="Còn "+miss.length+" mục chưa chọn (viền đỏ).";miss.forEach(x=>card(x.id).classList.add("miss"))}
+ $("#msg").textContent=m;if(m){(miss.length?card(miss[0].id):$("#v1")).scrollIntoView({behavior:"smooth",block:"center"});return}
+ const a={};Object.keys(A).forEach(k=>{if(A[k])a[k]=A[k]});
+ $("#rt").value="BẢN GIAO ƯỚC THI ĐUA NĂM HỌC 2026–2027\nHọ tên: "+A.n+" | Tổ/bộ môn: "+A.t+(A.c?" | Chức vụ: "+A.c:"")+"\n\n"+ALL.filter(x=>!x.p).map(x=>x.id+". "+sh(x.t)+": "+val(a,x)).join("\n")+"\n\nMã gửi: GU1:"+enc({n:A.n.trim(),t:A.t.trim(),c:A.c||"",a});
+ const it=ALL.filter(x=>!x.p),pl={h:["Họ tên","Tổ/bộ môn","Chức vụ"].concat(it.map(x=>x.id+". "+sh(x.t))),v:[A.n.trim(),A.t.trim(),A.c||""].concat(it.map(x=>val(a,x).replace(/^—$/,""))),text:$("#rt").value};
+ const done=ok=>{$("#go").disabled=false;$("#go").textContent="Hoàn tất đăng ký";$("#rh").textContent=ok?"✅ Đã gửi đăng ký thành công. Xin cảm ơn!":"⚠️ Chưa gửi được. Hãy sao chép nội dung dưới đây và gửi cho tổ trưởng qua Zalo/email.";$("#v1").hidden=true;$("#rs").hidden=false;window.scrollTo(0,0)};
+ if(!URL_GUI||URL_GUI.indexOf("script.google.com")<0){done(false);return}
+ $("#go").disabled=true;$("#go").textContent="Đang gửi…";
+ fetch(URL_GUI,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(pl)}).then(()=>done(true)).catch(()=>done(false))};
+$("#bk").onclick=()=>{$("#rs").hidden=true;$("#v1").hidden=false};
+$("#cp").onclick=()=>{const t=$("#rt");t.select();let ok=false;try{navigator.clipboard.writeText(t.value);ok=true}catch(e){}if(!ok)try{ok=document.execCommand("copy")}catch(e){}
+ $("#cm").textContent=ok?"Đã sao chép. Dán vào Zalo/email để gửi.":"Hãy giữ ngón tay trên ô nội dung, chọn Sao chép."};
+if(navigator.share)$("#sh").onclick=()=>navigator.share({title:"Bản giao ước thi đua",text:$("#rt").value}).catch(()=>{});else $("#sh").hidden=true;
+const tab=n=>{$("#v1").hidden=n!=1||!$("#rs").hidden;$("#v2").hidden=n!=2;if(n==2)$("#rs").hidden=true;$("#t1").classList.toggle("on",n==1);$("#t2").classList.toggle("on",n==2)};
+$("#t1").onclick=()=>{$("#rs").hidden=true;tab(1);$("#v1").hidden=false};$("#t2").onclick=()=>tab(2);
+$("#ag").onclick=()=>{
+ const mp=new Map();[...$("#in").value.matchAll(/GU1:([A-Za-z0-9+\/=]+)/g)].forEach(m=>{try{const r=dec(m[1]);mp.set((r.n+"|"+r.t).toLowerCase(),r)}catch(e){}});
+ const R=[...mp.values()],N=R.length,tot=+$("#tot").value||0;
+ if(!N){$("#ar").innerHTML='<p class="msg">Chưa đọc được bản đăng ký nào. Kiểm tra lại có dòng “Mã gửi: GU1:…”.</p>';return}
+ const cnt=(id,p)=>R.filter(r=>(r.a[id]||"").startsWith(p)).length;
+ const ld=cnt("1","Đăng ký"),cs=cnt("2","Đăng ký"),xs=cnt("4","Hoàn thành xuất sắc"),ht=cnt("4","Hoàn thành tốt");
+ const ck=[["CSTĐ cơ sở: "+cs+" / LĐTT-CSTT "+ld,cs<=0.1*ld?"Đạt (≤ 10% số LĐTT)":"Vượt 10% số LĐTT"],["Xuất sắc: "+xs+" / Hoàn thành tốt "+ht,xs<=0.2*ht?"Đạt (≤ 20%)":xs<=0.25*ht?"Chỉ hợp lệ nếu đơn vị có thành tích nổi trội (≤ 25%)":"Vượt 25%"]];
+ const rows=REQ.map(x=>{const t={};R.forEach(r=>{const v=r.a[x.id];if(v)t[v]=(t[v]||0)+1});return"<tr><td>"+x.id+". "+esc(sh(x.t))+"</td><td>"+(Object.keys(t).map(k=>esc(k)+": <b>"+t[k]+"</b>").join("<br>")||"—")+"</td></tr>"}).join("");
+ const items=ALL.filter(x=>!x.p),tsv=[["Họ tên","Tổ/bộ môn","Chức vụ"].concat(items.map(x=>x.id+". "+sh(x.t)))].concat(R.map(r=>[r.n,r.t,r.c].concat(items.map(x=>val(r.a,x).replace(/^—$/,""))))).map(l=>l.map(c=>String(c).replace(/[\t\n]/g," ")).join("\t")).join("\n");
+ $("#ar").innerHTML="<p><b>Đã nhận "+N+(tot?"/"+tot:"")+" bản</b></p><h2>Kiểm tra theo quy định</h2>"+ck.map(c=>"<div class='card'>"+c[0]+"<br><b>"+c[1]+"</b></div>").join("")+"<h2>Số lượng theo từng nội dung</h2><div class='sc'><table>"+rows+"</table></div><h2>Bảng chi tiết (dán vào Excel / Google Sheets)</h2><textarea id='tv' readonly></textarea><button id='ct' style='margin-top:8px'>Sao chép bảng</button><span class='s' id='cn'></span>";
+ $("#tv").value=tsv;$("#ct").onclick=()=>{const t=$("#tv");t.select();let ok=false;try{navigator.clipboard.writeText(t.value);ok=true}catch(e){}if(!ok)try{ok=document.execCommand("copy")}catch(e){}$("#cn").textContent=ok?" Đã sao chép":" Hãy chọn và sao chép thủ công"}};
+</script></body></html>
