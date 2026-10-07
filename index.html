@@ -42,6 +42,10 @@ table{border-collapse:collapse;width:100%;font-size:.88rem}td,th{border:1px soli
 <label class="fl">Chức vụ<input type="text" data-k="c"></label></div>
 <div class="bar"><div class="s" id="pt"></div><div class="pb"><i id="pg"></i></div></div>
 <div id="f"></div>
+<h2>Chữ ký của người đăng ký *</h2>
+<div class="card" id="csig"><div class="s">Dùng ngón tay (hoặc chuột) ký vào khung bên dưới.</div>
+<canvas id="sg" width="600" height="220" style="width:100%;aspect-ratio:600/220;background:#fff;border:1.5px solid var(--bd);border-radius:10px;touch-action:none;margin-top:8px"></canvas>
+<div class="os"><button class="o" id="sgc">Xóa, ký lại</button></div></div>
 <div class="msg" id="msg"></div>
 <button class="p" id="go" style="width:100%">Hoàn tất đăng ký</button>
 <p class="sub">Bản đang nhập tự lưu trên máy, đóng trang mở lại vẫn còn.</p>
@@ -84,7 +88,7 @@ const G=[{h:"I. DANH HIỆU THI ĐUA CÁ NHÂN",i:[
 {id:"11",t:"Hoàn thành chương trình bồi dưỡng thường xuyên và tập huấn theo kế hoạch",c:"Cam kết hoàn thành đủ",b:"Kế hoạch bồi dưỡng; MC: chứng nhận, báo cáo."},
 {id:"12",t:"Hồ sơ chuyên môn (giáo án và hồ sơ khác theo quy định hiện hành), nộp đúng hạn",c:"Cam kết thực hiện đầy đủ",b:"Quy định hiện hành của Bộ GDĐT; hướng dẫn của Sở/trường."},
 {id:"13",t:"Sáng kiến, giải pháp nâng cao chất lượng (phải có hiệu quả thực tế, được áp dụng)",o:["01 sáng kiến cấp cơ sở","Không đăng ký"],f:[["Tên đề tài (nếu có)","t"]],b:"Điều kiện xét CSTĐ cơ sở. MC: bản mô tả, biên bản đánh giá của Hội đồng sáng kiến."},
-{id:"14",t:"Ứng dụng công nghệ thông tin, chuyển đổi số trong dạy học và quản lý lớp",f:[["Nội dung đăng ký","t"]],b:"Kế hoạch chuyển đổi số của trường."},
+{id:"14",t:"Ứng dụng công nghệ thông tin, chuyển đổi số trong dạy học và quản lý lớp",s:"Chọn các nội dung thầy/cô sẽ thực hiện (được chọn nhiều), hoặc ghi thêm ở ô bên dưới.",m:["Dùng học liệu số trong giờ dạy (bài giảng điện tử, video, trò chơi, bài tập tương tác)","Dạy học và giao bài trên nền tảng trực tuyến (lớp học online, Zalo, Google Classroom…)","Quản lý lớp bằng phần mềm: sổ điểm, sổ liên lạc điện tử, hồ sơ học sinh","Dùng công cụ số để kiểm tra, đánh giá học sinh (đề trực tuyến, biểu mẫu, phiếu nhận xét điện tử)","Ứng dụng AI hỗ trợ soạn bài, ra đề có kiểm soát và kiểm duyệt nội dung","Tham gia tập huấn về chuyển đổi số, kỹ năng số và an toàn thông tin","Liên lạc, phối hợp với phụ huynh qua kênh số"],f:[["Nội dung khác / mô tả cụ thể (nếu có)","t"]],b:"Kế hoạch chuyển đổi số của trường."},
 {id:"15",t:"Tham gia hội thi, cuộc thi, phong trào chuyên môn do cấp có thẩm quyền tổ chức (nếu có)",s:"Chọn từng cuộc thi bên dưới. Chỉ đăng ký các hội thi có trong kế hoạch được duyệt.",p:1,b:"Phụ lục kèm Công văn số …/CV-PVHXH ngày 22/9/2026 của Phòng Văn hóa – Xã hội xã Vĩnh Gia."},
 hs("15.1","Hội thi hùng biện tiếng Anh cấp tỉnh năm 2026-2027","Tháng 03/2027","Nộp hồ sơ cuối tháng 01/2027."),
 hs("15.2","Cuộc thi Nghiên cứu khoa học, kỹ thuật dành cho học sinh Trung học cơ sở","Tháng 01/2027","Nộp hồ sơ dự thi tháng 12/2026."),
@@ -106,25 +110,34 @@ let A={};try{A=JSON.parse(localStorage.getItem("gu26")||"{}")}catch(e){}
 const save=()=>{try{localStorage.setItem("gu26",JSON.stringify(A))}catch(e){}};
 $("#f").innerHTML=G.map(g=>"<h2>"+g.h+"</h2>"+g.i.map(x=>{
  const o=(x.o||[]).map(v=>`<label class="o"><input type="radio" name="r${x.id}" data-k="${x.id}" value="${esc(v)}"${A[x.id]===v?" checked":""}><span>${esc(v)}</span></label>`).join("");
+ const m=(x.m||[]).map(v=>`<label class="o"><input type="checkbox" data-k="${x.id}" data-m="${esc(v)}"${(A[x.id]||"").split("; ").includes(v)?" checked":""}><span>${esc(v)}</span></label>`).join("");
  const c=x.c?`<div class="os"><label class="o"><input type="checkbox" data-k="${x.id}" data-c="${esc(x.c)}"${A[x.id]?" checked":""}><span>☑ ${esc(x.c)}</span></label></div>`:"";
  const f=(x.f||[]).map((q,j)=>`<label class="fl">${q[0]}<input type="${q[1]=="n"?"number":"text"}" inputmode="${q[1]=="n"?"decimal":"text"}" data-k="${x.id}_${j}" value="${esc(A[x.id+"_"+j])}"></label>`).join("");
- return `<div class="card" id="c${x.id}"><div class="t"><b>${x.id}.</b>${esc(x.t)}</div>${x.s?`<div class="s">${esc(x.s)}</div>`:""}${o?`<div class="os">${o}</div>`:""}${c}${f}${x.b?`<details><summary>Căn cứ – minh chứng</summary>${esc(x.b)}</details>`:""}${x.n?`<div class="s" style="margin-top:6px">${esc(x.n)}</div>`:""}</div>`}).join("")).join("");
+ return `<div class="card" id="c${x.id}"><div class="t"><b>${x.id}.</b>${esc(x.t)}</div>${x.s?`<div class="s">${esc(x.s)}</div>`:""}${o?`<div class="os">${o}</div>`:""}${m?`<div class="os">${m}</div>`:""}${c}${f}${x.b?`<details><summary>Căn cứ – minh chứng</summary>${esc(x.b)}</details>`:""}${x.n?`<div class="s" style="margin-top:6px">${esc(x.n)}</div>`:""}</div>`}).join("")).join("");
 document.querySelectorAll("[data-k]").forEach(e=>{if(["n","t","c"].includes(e.dataset.k))e.value=A[e.dataset.k]||""});
 function upd(){let d=0;REQ.forEach(x=>{const k=!!A[x.id];if(k)d++;const e=card(x.id);e.classList.toggle("ok",k);if(k)e.classList.remove("miss")});
  $("#pt").textContent="Đã chọn "+d+"/"+REQ.length+" mục";$("#pg").style.width=(100*d/REQ.length)+"%"}
 document.addEventListener("input",e=>{const t=e.target,k=t.dataset&&t.dataset.k;if(!k)return;
- A[k]=t.type=="checkbox"?(t.checked?t.dataset.c:""):t.value;save();upd()});
+ A[k]=t.dataset.m?[...document.querySelectorAll('input[data-m][data-k="'+k+'"]:checked')].map(e=>e.dataset.m).join("; "):t.type=="checkbox"?(t.checked?t.dataset.c:""):t.value;save();upd()});
 upd();
+const cv=$("#sg"),cx=cv.getContext("2d");let dr=false,hasSig=false;
+const clr=()=>{cx.fillStyle="#fff";cx.fillRect(0,0,600,220);cx.lineWidth=3;cx.lineCap=cx.lineJoin="round";cx.strokeStyle="#111";hasSig=false};clr();
+const pt=e=>{const r=cv.getBoundingClientRect();return[(e.clientX-r.left)*600/r.width,(e.clientY-r.top)*220/r.height]};
+cv.addEventListener("pointerdown",e=>{e.preventDefault();dr=true;try{cv.setPointerCapture(e.pointerId)}catch(x){}const[p,q]=pt(e);cx.beginPath();cx.moveTo(p,q);cx.lineTo(p+.1,q+.1);cx.stroke();hasSig=true;card("sig").classList.remove("miss");card("sig").classList.add("ok")});
+cv.addEventListener("pointermove",e=>{if(!dr)return;const[p,q]=pt(e);cx.lineTo(p,q);cx.stroke()});
+["pointerup","pointercancel","pointerleave"].forEach(n=>cv.addEventListener(n,()=>{dr=false}));
+$("#sgc").onclick=()=>{clr();card("sig").classList.remove("ok")};
 const val=(a,x)=>[a[x.id]].concat((x.f||[]).map((q,j)=>a[x.id+"_"+j]?q[0]+": "+a[x.id+"_"+j]:"")).filter(Boolean).join("; ")||"—";
 const enc=o=>btoa(unescape(encodeURIComponent(JSON.stringify(o)))),dec=s=>JSON.parse(decodeURIComponent(escape(atob(s))));
 $("#go").onclick=()=>{
  const miss=REQ.filter(x=>!A[x.id]);let m="";
  if(!(A.n||"").trim()||!(A.t||"").trim())m="Vui lòng nhập họ tên và tổ/bộ môn. ";
  if(miss.length){m+="Còn "+miss.length+" mục chưa chọn (viền đỏ).";miss.forEach(x=>card(x.id).classList.add("miss"))}
- $("#msg").textContent=m;if(m){(miss.length?card(miss[0].id):$("#v1")).scrollIntoView({behavior:"smooth",block:"center"});return}
+ if(!hasSig){m+=" Vui lòng ký tên vào khung chữ ký.";card("sig").classList.add("miss")}
+ $("#msg").textContent=m;if(m){(miss.length?card(miss[0].id):!hasSig?card("sig"):$("#v1")).scrollIntoView({behavior:"smooth",block:"center"});return}
  const a={};Object.keys(A).forEach(k=>{if(A[k])a[k]=A[k]});
  $("#rt").value="BẢN GIAO ƯỚC THI ĐUA NĂM HỌC 2026–2027\nHọ tên: "+A.n+" | Tổ/bộ môn: "+A.t+(A.c?" | Chức vụ: "+A.c:"")+"\n\n"+ALL.filter(x=>!x.p).map(x=>x.id+". "+sh(x.t)+": "+val(a,x)).join("\n")+"\n\nMã gửi: GU1:"+enc({n:A.n.trim(),t:A.t.trim(),c:A.c||"",a});
- const it=ALL.filter(x=>!x.p),pl={h:["Họ tên","Tổ/bộ môn","Chức vụ"].concat(it.map(x=>x.id+". "+sh(x.t))),v:[A.n.trim(),A.t.trim(),A.c||""].concat(it.map(x=>val(a,x).replace(/^—$/,""))),text:$("#rt").value};
+ const it=ALL.filter(x=>!x.p),pl={h:["Họ tên","Tổ/bộ môn","Chức vụ"].concat(it.map(x=>x.id+". "+sh(x.t))),v:[A.n.trim(),A.t.trim(),A.c||""].concat(it.map(x=>val(a,x).replace(/^—$/,""))),text:$("#rt").value,sig:cv.toDataURL("image/png")};
  const done=ok=>{$("#go").disabled=false;$("#go").textContent="Hoàn tất đăng ký";$("#rh").textContent=ok?"✅ Đã gửi đăng ký thành công. Xin cảm ơn!":"⚠️ Chưa gửi được. Hãy sao chép nội dung dưới đây và gửi cho tổ trưởng qua Zalo/email.";$("#v1").hidden=true;$("#rs").hidden=false;window.scrollTo(0,0)};
  if(!URL_GUI||URL_GUI.indexOf("script.google.com")<0){done(false);return}
  $("#go").disabled=true;$("#go").textContent="Đang gửi…";
